@@ -7,8 +7,8 @@ public class BurhanQuest {
                 "|--: .  . .--.|--. .-.  .--.  |    |.  . .-. .--.|  |\r\n" + //
                 "|   )|  | |   |  |(   ) |  |  :  ( ;|  |(.-' `--.|  '\r\n" + //
                 "'--' `--`-'   '  `-`-'`-'  `-  `--`-`--`-`--'`--'`-'o";
-    private static final String STUDENT_NAME = "Naila Husna Teguh Suasono";
-    private static final String STUDENT_ID = "2506620444";
+    private static final String STUDENT_NAME = "subidi";
+    private static final String STUDENT_ID = "777";
 
 
     // Penanda atribut, silakan manfaatkan variabel ini untuk menandai atribut di dalam data
