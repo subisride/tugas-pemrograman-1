@@ -35,22 +35,22 @@ public class BurhanQuest {
     private static final Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        // TODO: Tampilkan banner
+        // DONE: Tampilkan banner
         System.out.println(BANNER);
         System.out.println("Selamat datang di BurhanQuest!");
         System.out.println("Dibuat oleh: " + STUDENT_NAME + " - " + STUDENT_ID);
         System.out.println("Mari kita mulai dengan membuat sejumlah data quest dan pengembara.");
 
-        // TODO: Seeding data quest dan pengembara
+        // DONE: Seeding data quest dan pengembara
         int questCount = 1;
         int travelerCount = 1;
         boolean invalidInput = true;
 
-        // TODO: Input banyak quest dan pengembara
+        // DONE: Input banyak quest dan pengembara
         while (invalidInput) {
             System.out.print("Silakan masukkan banyak quest yang ingin didaftarkan: ");
             String questCountInput = input.nextLine();
-            // TODO: Validasi input jumlah quest
+            // DONE: Validasi input jumlah quest
             if (questCountInput.matches("^(0|[1-9][0-9]*)$")) {
                 questCount = Integer.parseInt(questCountInput);
                 invalidInput = false;
@@ -59,14 +59,14 @@ public class BurhanQuest {
             }
         }
 
-        // TODO: Input jumlah pengembara
+        // DONE: Input jumlah pengembara
         invalidInput = true;
         while (invalidInput)
 
         {
             System.out.print("Silakan masukkan banyak pengembara yang ingin didaftarkan: ");
             String travelerCountInput = input.nextLine();
-            // TODO: Validasi input jumlah pengembara
+            // DONE: Validasi input jumlah pengembara
             if (travelerCountInput.matches("^(0|[1-9][0-9]*)$")) {
                 travelerCount = Integer.parseInt(travelerCountInput);
                 invalidInput = false;
@@ -79,7 +79,7 @@ public class BurhanQuest {
         String questData = "";
         String travelerData = "";
         System.out.println("Mulai memasukkan data quest.");
-        // TODO: Input data quest sebanyak quest yang diminta
+        // DONE: Input data quest sebanyak quest yang diminta
         for (int i = 0; i < questCount; i++) {
             boolean questValid = true;
 
@@ -118,13 +118,13 @@ public class BurhanQuest {
         System.out.println();
 
         System.out.println("Mulai memasukkan data pengembara.");
-        // TODO: Input data pengembara sebanyak pengembara yang diminta
+        // DONE: Input data pengembara sebanyak pengembara yang diminta
         for (int i = 0; i < travelerCount; i++) {
             boolean travelerValid = true;
 
             while (travelerValid) {
-                double travelerExp;
-                String travelerStatus = "";
+                int travelerExp;
+                String travelerStatus = "kosong";
                 System.out.println();
                 System.out.println("Pengembara " + travelerId);
 
@@ -138,14 +138,22 @@ public class BurhanQuest {
                     if (travelerLevel == 1) {
                         travelerExp = 0;
                     } else {
-                        travelerExp = 5000 * (Math.pow(2, travelerLevel - 2));
+                        int basis = 2;
+                        int pangkat = travelerLevel - 2;
+                        travelerExp = 5000;
+                        for (int a = 0; a < pangkat; a++) {
+                            travelerExp *= basis;
+                        }
+                        if (travelerExp > MAX_EXP) {
+                            travelerExp = MAX_EXP;
+                        }
                     }
-                    travelerData += NAME_IDENTIFIER + travelerName + LEVEL_IDENTIFIER + travelerLevel
-                            + EXP_IDENTIFIER + travelerExp + STATUS_IDENTIFIER + travelerStatus;
+                    travelerData += "P" + travelerId + NAME_IDENTIFIER + travelerName + LEVEL_IDENTIFIER + travelerLevel
+                            + EXP_IDENTIFIER + travelerExp + STATUS_IDENTIFIER + travelerStatus + "\n";
 
                     System.out.println("Pengembara berhasil ditambahkan");
-                    travelerId++;
                     travelerValid = false;
+                    travelerId++;
 
                 } else {
                     System.out.println("Input tidak valid. Harap masukkan data dengan benar");
@@ -177,29 +185,30 @@ public class BurhanQuest {
 
             switch (choice) {
                 case "1":
-                    // TODO: Tampilkan daftar quest
+                    // DONE: Tampilkan daftar quest
                     System.out.println("Quest yang terdaftar: ");
                     int i = 0;
-                    while(i < questCount) {
+                    while (i < questData.length()) {
                         int akhir = questData.indexOf('\n', i);
-                        if (akhir == -1){
+                        if (akhir == -1) {
                             akhir = questData.length();
                         }
-                        
-                        int indexquestName = questData.indexOf(NAME_IDENTIFIER);
-                        int indexquestDesc = questData.indexOf(DESC_IDENTIFIER);
-                        int indexquestReward = questData.indexOf(REWARD_IDENTIFIER);
-                        int indexquestBonus = questData.indexOf(EXP_IDENTIFIER);
-                        int indexquestDiff = questData.indexOf(DIFFICULTY_IDENTIFIER);
-                        int indexquestStat = questData.indexOf(STATUS_IDENTIFIER);
+                        String quest = questData.substring(i, akhir);
 
-                        String questId = questData.substring(0, indexquestName);
-                        String questName = questData.substring(indexquestName + 1, indexquestDesc);
-                        String questDesc = questData.substring(indexquestDesc + 1, indexquestReward);
-                        String questReward = questData.substring(indexquestReward + 1, indexquestBonus);
-                        String questBonus = questData.substring(indexquestBonus + 1, indexquestDiff);
-                        String questDiff = questData.substring(indexquestDiff + 1, indexquestStat);
-                        String questStat = questData.substring(indexquestStat+1);
+                        int indexquestName = quest.indexOf(NAME_IDENTIFIER);
+                        int indexquestDesc = quest.indexOf(DESC_IDENTIFIER);
+                        int indexquestReward = quest.indexOf(REWARD_IDENTIFIER);
+                        int indexquestBonus = quest.indexOf(EXP_IDENTIFIER);
+                        int indexquestDiff = quest.indexOf(DIFFICULTY_IDENTIFIER);
+                        int indexquestStat = quest.indexOf(STATUS_IDENTIFIER);
+
+                        String questId = quest.substring(0, indexquestName);
+                        String questName = quest.substring(indexquestName + 1, indexquestDesc);
+                        String questDesc = quest.substring(indexquestDesc + 1, indexquestReward);
+                        String questReward = quest.substring(indexquestReward + 1, indexquestBonus);
+                        String questBonus = quest.substring(indexquestBonus + 1, indexquestDiff);
+                        String questDiff = quest.substring(indexquestDiff + 1, indexquestStat);
+                        String questStat = quest.substring(indexquestStat + 1);
 
                         // Difficulty
                         if (questDiff.equals("mudah")) {
@@ -220,21 +229,155 @@ public class BurhanQuest {
                         System.out.println("Bonus Exp Quest: " + questBonus);
                         System.out.println("Tingkat Kesulitan Quest: " + questDiff);
                         System.out.println("Status Quest: " + questStat);
-                        
-                        i = akhir +1;
+
+                        i = akhir + 1;
                     }
                     break;
+
                 case "2":
-                    // TODO: Tampilkan daftar pengembara
-                    System.out.println("Belum diimplementasikan");
+                    // DONE: Tampilkan daftar pengembara
+                    System.out.println("Pengembara yang terdaftar: ");
+                    int j = 0;
+                    while (j < travelerData.length()) {
+                        int travakhir = travelerData.indexOf('\n', j);
+                        if (travakhir == -1) {
+                            travakhir = travelerData.length();
+                        }
+
+                        String traveler = travelerData.substring(j, travakhir);
+
+                        int indextravelerName = traveler.indexOf(NAME_IDENTIFIER);
+                        int indextravelerLevel = traveler.indexOf(LEVEL_IDENTIFIER);
+                        int indextravelerExp = traveler.indexOf(EXP_IDENTIFIER);
+                        int indextravelerStatus = traveler.indexOf(STATUS_IDENTIFIER);
+
+                        String travelerId = traveler.substring(0, indextravelerName);
+                        String travelerName = traveler.substring(indextravelerName + 1, indextravelerLevel);
+                        String travelerLevel = traveler.substring(indextravelerLevel + 1, indextravelerExp);
+                        String travelerExp = traveler.substring(indextravelerExp + 1, indextravelerStatus);
+                        String travelerStatus = traveler.substring(indextravelerStatus + 1);
+
+                        System.out.println("ID Pengembara: " + travelerId);
+                        System.out.println("Nama Pengembara: " + travelerName);
+                        System.out.println("Level Pengembara: " + travelerLevel);
+                        System.out.println("Exp Pengembara: " + travelerExp);
+                        System.out.println("Status Pengembara: " + travelerStatus);
+                        System.out.println();
+
+                        j = travakhir + 1;
+                    }
                     break;
+
                 case "3":
-                    // TODO: Tambah quest
-                    System.out.println("Belum diimplementasikan");
+                    // DONE: Tambah quest
+                    boolean addQuestValid = true;
+                    while (addQuestValid) {
+                        System.out.println("Quest " + questId);
+
+                        System.out.print("Masukkan nama quest (masukkan 'x' atau 'X' untuk kembali): ");
+                        String questName = input.nextLine();
+                        if (questName.toLowerCase().equals("x")) {
+                            addQuestValid = false;
+                            break;
+                        }
+                        System.out.print("Masukkan deskripsi quest (masukkan 'x' atau 'X' untuk kembali): ");
+                        String questDesc = input.nextLine();
+                        if (questDesc.toLowerCase().equals("x")) {
+                            addQuestValid = false;
+                            break;
+                        }
+                        System.out.print(
+                                "Masukkan reward quest berupa bilangan bulat nonnegatif (masukkan 'x' atau 'X' untuk kembali): ");
+                        String questReward = input.nextLine();
+                        if (questReward.toLowerCase().equals("x")) {
+                            addQuestValid = false;
+                            break;
+                        }
+                        System.out.print(
+                                "Masukkan bonus exp quest berupa bilangan bulat nonnegatif (masukkan 'x' atau 'X' untuk kembali): ");
+                        String questBonus = input.nextLine();
+                        if (questBonus.toLowerCase().equals("x")) {
+                            addQuestValid = false;
+                            break;
+                        }
+
+                        System.out.print(
+                                "Masukkan tingkan kesulitan quest (opsi: mudah, menengah, sulit) (masukkan 'x' atau 'X' untuk kembali): ");
+                        String questDiff = input.nextLine();
+                        if (questDiff.toLowerCase().equals("x")) {
+                            addQuestValid = false;
+                            break;
+                        }
+
+                        if (questName.matches("^[a-zA-Z0-9 ]*$") && questDesc.matches("^[a-zA-Z0-9 ]*$")
+                                && questReward.matches("(0|[1-9][0-9]*)$") && questBonus.matches("(0|[1-9][0-9]*)$")
+                                && questDiff.toLowerCase().matches("^(mudah|menengah|sulit)")) {
+
+                            questData += "Q" + questId + NAME_IDENTIFIER + questName +
+                                    DESC_IDENTIFIER + questDesc +
+                                    REWARD_IDENTIFIER + questReward +
+                                    EXP_IDENTIFIER + questBonus +
+                                    DIFFICULTY_IDENTIFIER + questDiff +
+                                    STATUS_IDENTIFIER + "tersedia\n";
+                            System.out.println("Quest berhasil ditambahkan.");
+                            addQuestValid = false;
+                            questId++;
+
+                        } else {
+                            System.out.println("Input tidak valid. Harap masukkan data dengan benar.");
+                        }
+                    }
                     break;
+
                 case "4":
                     // TODO: Tambah pengembara
-                    System.out.println("Belum diimplementasikan");
+                    boolean addTravelerValid = true;
+                    int travelerExp = 0;
+                    String travelerStatus = "kosong";
+
+                    while (addTravelerValid) {
+                        System.out.println("Pengambara " + travelerId);
+
+                        System.out.print("Masukkan nama pengembara (masukkan 'x' atau 'X' untuk kembali): ");
+                        String travelerName = input.nextLine();
+                        if (travelerName.toLowerCase().equals("x")) {
+                            addTravelerValid = false;
+                            break;
+                        }
+
+                        System.out.print(
+                                "Masukkan level pengembara berupa bilangan bulat (masukkan 'x' atau 'X' untuk kembali: ");
+                        String travelerLevelInput = input.nextLine();
+                        if (travelerLevelInput.toLowerCase().equals("x")) {
+                            addTravelerValid = false;
+                            break;
+                        }
+
+                        if (travelerName.matches("^[a-zA-Z0-9 ]*$")
+                                && travelerLevelInput.matches("([1-9]|1[0-9]|20)")) {
+                            int travelerLevel = Integer.parseInt(travelerLevelInput);
+                            if (travelerLevel == 1) {
+                                travelerExp = 0;
+                            } else {
+                                int basis = 2;
+                                int pangkat = travelerLevel - 2;
+                                travelerExp = 5000;
+                                for (int a = 0; a < pangkat; a++) {
+                                    travelerExp *= basis;
+                                }
+                                if (travelerExp > MAX_EXP) {
+                                    travelerExp = MAX_EXP;
+                                }
+                            }
+                            travelerData += "P" + travelerId + NAME_IDENTIFIER + travelerName + LEVEL_IDENTIFIER
+                                    + travelerLevel
+                                    + EXP_IDENTIFIER + travelerExp + STATUS_IDENTIFIER + travelerStatus + "\n";
+
+                            System.out.println("Pengembara berhasil ditambahkan");
+                            addTravelerValid = false;
+                            travelerId++;
+                        }
+                    }
                     break;
                 case "5":
                     // TODO: Menjalankan quest
@@ -262,6 +405,9 @@ public class BurhanQuest {
                     break;
                 case "11":
                     // TODO: Keluar
+                    System.out.println("Terima kasih telah menggunakan BurhanQuest!");
+                    System.out.println("Dibuat oleh: " + STUDENT_NAME + " - " + STUDENT_ID);
+                    System.out.println(BANNER);
                     running = false;
                     break;
                 default:
